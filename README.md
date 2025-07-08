@@ -1,0 +1,86 @@
+# py-pinocchio
+
+A fast and flexible implementation of Rigid Body Dynamics algorithms and their analytical derivatives, designed for educational purposes.
+
+## Features
+
+- **Simple and Educational**: Clean, well-documented code designed for learning rigid body dynamics
+- **Multiple Format Support**: Load robot models from URDF and MJCF files
+- **Core Algorithms**: Forward/inverse kinematics, dynamics, and Jacobian computations
+- **Pure Python**: Easy to understand implementation using NumPy and SciPy
+- **Extensible**: Modular design for easy extension and customization
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/py-pinocchio.git
+cd py-pinocchio
+
+# Install in development mode
+pip install -e .
+
+# Or install with development dependencies
+pip install -e .[dev]
+```
+
+## Quick Start
+
+```python
+import py_pinocchio as pin
+
+# Load a robot model from URDF
+robot = pin.parse_urdf_file("path/to/robot.urdf")
+
+# Compute forward kinematics
+q = [0.1, 0.2, 0.3]  # joint positions
+ee_pos = pin.get_link_position(robot, q, "end_effector")
+
+# Compute Jacobian
+J = pin.compute_geometric_jacobian(robot, q, "end_effector")
+
+# Compute inverse dynamics (joint torques)
+qd = [0.0, 0.0, 0.0]  # joint velocities
+qdd = [0.0, 0.0, 0.0]  # joint accelerations
+tau = pin.compute_inverse_dynamics(robot, q, qd, qdd)
+
+# Compute forward dynamics (joint accelerations)
+applied_torques = [1.0, 0.5, 0.2]
+qdd_computed = pin.compute_forward_dynamics(robot, q, qd, applied_torques)
+```
+
+## Project Structure
+
+```
+py-pinocchio/
+├── py_pinocchio/       # Main package
+│   ├── math/           # Mathematical utilities
+│   ├── parsers/        # URDF/MJCF parsers
+│   ├── algorithms/     # Dynamics algorithms
+│   └── model.py        # Robot model classes
+├── examples/           # Usage examples
+├── tests/             # Test suite
+└── docs/              # Documentation
+```
+
+## Educational Focus
+
+This implementation prioritizes:
+- **Clarity over performance**: Code is written to be easily understood
+- **Step-by-step algorithms**: Each algorithm is broken down into clear steps
+- **Comprehensive comments**: Every function and algorithm is well-documented
+- **Learning resources**: Examples and tutorials for understanding rigid body dynamics
+
+## Contributing
+
+This is an educational project. Contributions that improve clarity, add educational examples, or fix bugs are welcome!
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## References
+
+- Original Pinocchio library: https://github.com/stack-of-tasks/pinocchio
+- Rigid Body Dynamics Algorithms by Roy Featherstone
+- Modern Robotics by Kevin Lynch and Frank Park
