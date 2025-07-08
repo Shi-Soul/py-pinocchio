@@ -47,87 +47,69 @@ Where:
 
 The spatial cross product captures Coriolis effects:
 
-```
-v₁ ×* v₂ = [ω₁ × ω₂ + v₁ × v₂]
-           [ω₁ × v₂        ]
-```
+$$\mathbf{v}_1 \times^* \mathbf{v}_2 = \begin{bmatrix} \boldsymbol{\omega}_1 \times \boldsymbol{\omega}_2 + \mathbf{v}_1 \times \mathbf{v}_2 \\ \boldsymbol{\omega}_1 \times \mathbf{v}_2 \end{bmatrix}$$
 
 **Properties:**
-- Bilinear: `(av₁ + bv₂) ×* v₃ = a(v₁ ×* v₃) + b(v₂ ×* v₃)`
-- Anti-symmetric: `v₁ ×* v₂ = -(v₂ ×* v₁)`
+- Bilinear: $(a\mathbf{v}_1 + b\mathbf{v}_2) \times^* \mathbf{v}_3 = a(\mathbf{v}_1 \times^* \mathbf{v}_3) + b(\mathbf{v}_2 \times^* \mathbf{v}_3)$
+- Anti-symmetric: $\mathbf{v}_1 \times^* \mathbf{v}_2 = -(\mathbf{v}_2 \times^* \mathbf{v}_1)$
 
 ### Spatial Inertia
 
 Spatial inertia combines mass and rotational inertia:
 
-```
-I = [I_c + m c×c×  m c×]  ∈ ℝ⁶ˣ⁶
-    [m c×          m 1 ]
-```
+$$\mathbf{I} = \begin{bmatrix} \mathbf{I}_c + m \mathbf{c}^\times \mathbf{c}^\times & m \mathbf{c}^\times \\ m \mathbf{c}^\times & m \mathbf{1} \end{bmatrix} \in \mathbb{R}^{6 \times 6}$$
 
 Where:
-- `I_c ∈ ℝ³ˣ³` is inertia tensor about center of mass
-- `m ∈ ℝ` is mass
-- `c ∈ ℝ³` is center of mass position
-- `1 ∈ ℝ³ˣ³` is identity matrix
+- $\mathbf{I}_c \in \mathbb{R}^{3 \times 3}$ is inertia tensor about center of mass
+- $m \in \mathbb{R}$ is mass
+- $\mathbf{c} \in \mathbb{R}^3$ is center of mass position
+- $\mathbf{1} \in \mathbb{R}^{3 \times 3}$ is identity matrix
 
 **Properties:**
-- Symmetric: `I = Iᵀ`
+- Symmetric: $\mathbf{I} = \mathbf{I}^T$
 - Positive definite for physical bodies
-- Transforms as: `I₂ = X₂₁ᵀ I₁ X₂₁`
+- Transforms as: $\mathbf{I}_2 = \mathbf{X}_{21}^T \mathbf{I}_1 \mathbf{X}_{21}$
 
 ## Rigid Body Kinematics
 
 ### Rotation Representations
 
-**Rotation Matrix** `R ∈ SO(3)`:
-- Orthogonal: `RRᵀ = I`
-- Determinant: `det(R) = 1`
+**Rotation Matrix** $\mathbf{R} \in SO(3)$:
+- Orthogonal: $\mathbf{R}\mathbf{R}^T = \mathbf{I}$
+- Determinant: $\det(\mathbf{R}) = 1$
 - 9 parameters, 3 DOF
 
-**Axis-Angle** `(k, θ)`:
-- Unit axis: `k ∈ S²`
-- Angle: `θ ∈ ℝ`
-- Rodrigues formula: `R = I + sin(θ)[k]× + (1-cos(θ))[k]×²`
+**Axis-Angle** $(\mathbf{k}, \theta)$:
+- Unit axis: $\mathbf{k} \in S^2$
+- Angle: $\theta \in \mathbb{R}$
+- Rodrigues formula: $\mathbf{R} = \mathbf{I} + \sin(\theta)[\mathbf{k}]_\times + (1-\cos(\theta))[\mathbf{k}]_\times^2$
 
-**Quaternions** `q = (w, x, y, z)`:
-- Unit quaternion: `|q| = 1`
-- Rotation matrix: `R(q) = I + 2w[v]× + 2[v]×²`
-- Where `v = (x, y, z)`
+**Quaternions** $\mathbf{q} = (w, x, y, z)$:
+- Unit quaternion: $|\mathbf{q}| = 1$
+- Rotation matrix: $\mathbf{R}(\mathbf{q}) = \mathbf{I} + 2w[\mathbf{v}]_\times + 2[\mathbf{v}]_\times^2$
+- Where $\mathbf{v} = (x, y, z)$
 
 ### Homogeneous Transformations
 
 4×4 matrices representing rigid body transformations:
 
-```
-T = [R t]  ∈ SE(3)
-    [0 1]
-```
+$$\mathbf{T} = \begin{bmatrix} \mathbf{R} & \mathbf{t} \\ \mathbf{0}^T & 1 \end{bmatrix} \in SE(3)$$
 
 **Properties:**
-- Composition: `T₃ = T₁ T₂`
-- Inverse: `T⁻¹ = [Rᵀ -Rᵀt]`
-                  `[0   1  ]`
-- Point transformation: `p' = Tp = Rp + t`
+- Composition: $\mathbf{T}_3 = \mathbf{T}_1 \mathbf{T}_2$
+- Inverse: $\mathbf{T}^{-1} = \begin{bmatrix} \mathbf{R}^T & -\mathbf{R}^T\mathbf{t} \\ \mathbf{0}^T & 1 \end{bmatrix}$
+- Point transformation: $\mathbf{p}' = \mathbf{T}\mathbf{p} = \mathbf{R}\mathbf{p} + \mathbf{t}$
 
 ### Velocity and Acceleration
 
 **Angular velocity** relates rotation rates:
-```
-Ṙ = [ω]× R
-```
+$$\dot{\mathbf{R}} = [\boldsymbol{\omega}]_\times \mathbf{R}$$
 
 **Spatial velocity** in body frame:
-```
-v = [ω]  where ω = angular velocity
-    [v]        v = linear velocity
-```
+$$\mathbf{v} = \begin{bmatrix} \boldsymbol{\omega} \\ \mathbf{v} \end{bmatrix} \text{ where } \begin{cases} \boldsymbol{\omega} = \text{angular velocity} \\ \mathbf{v} = \text{linear velocity} \end{cases}$$
 
 **Spatial acceleration**:
-```
-a = [α]  where α = angular acceleration
-    [a]        a = linear acceleration
-```
+$$\mathbf{a} = \begin{bmatrix} \boldsymbol{\alpha} \\ \mathbf{a} \end{bmatrix} \text{ where } \begin{cases} \boldsymbol{\alpha} = \text{angular acceleration} \\ \mathbf{a} = \text{linear acceleration} \end{cases}$$
 
 ## Robot Kinematics
 
@@ -135,54 +117,33 @@ a = [α]  where α = angular acceleration
 
 Maps joint angles to end-effector pose:
 
-```
-T₀ⁿ(q) = T₀¹(q₁) T₁²(q₂) ... Tⁿ⁻¹ⁿ(qₙ)
-```
+$$\mathbf{T}_0^n(\mathbf{q}) = \mathbf{T}_0^1(q_1) \mathbf{T}_1^2(q_2) \cdots \mathbf{T}_{n-1}^n(q_n)$$
 
-Where `Tⁱⁱ⁺¹(qᵢ₊₁)` is the transformation from link i to link i+1.
+Where $\mathbf{T}_i^{i+1}(q_{i+1})$ is the transformation from link $i$ to link $i+1$.
 
 **For revolute joint**:
-```
-Tⁱⁱ⁺¹(qᵢ₊₁) = [Rz(qᵢ₊₁) pᵢ₊₁]
-               [0        1   ]
-```
+$$\mathbf{T}_i^{i+1}(q_{i+1}) = \begin{bmatrix} \mathbf{R}_z(q_{i+1}) & \mathbf{p}_{i+1} \\ \mathbf{0}^T & 1 \end{bmatrix}$$
 
 **For prismatic joint**:
-```
-Tⁱⁱ⁺¹(qᵢ₊₁) = [I  pᵢ + qᵢ₊₁ zᵢ]
-               [0  1         ]
-```
+$$\mathbf{T}_i^{i+1}(q_{i+1}) = \begin{bmatrix} \mathbf{I} & \mathbf{p}_i + q_{i+1} \mathbf{z}_i \\ \mathbf{0}^T & 1 \end{bmatrix}$$
 
 ### Jacobian Matrices
 
 The Jacobian relates joint velocities to end-effector velocity:
 
-```
-v = J(q) q̇
-```
+$$\mathbf{v} = \mathbf{J}(\mathbf{q}) \dot{\mathbf{q}}$$
 
 **Geometric Jacobian** (body frame):
-```
-J = [J₁ J₂ ... Jₙ]
-```
+$$\mathbf{J} = \begin{bmatrix} \mathbf{J}_1 & \mathbf{J}_2 & \cdots & \mathbf{J}_n \end{bmatrix}$$
 
-For revolute joint i:
-```
-Jᵢ = [zᵢ₋₁        ]  (if joint affects rotation)
-     [zᵢ₋₁ × (pₙ-pᵢ₋₁)]
-```
+For revolute joint $i$:
+$$\mathbf{J}_i = \begin{bmatrix} \mathbf{z}_{i-1} \\ \mathbf{z}_{i-1} \times (\mathbf{p}_n - \mathbf{p}_{i-1}) \end{bmatrix}$$
 
-For prismatic joint i:
-```
-Jᵢ = [0  ]
-     [zᵢ₋₁]
-```
+For prismatic joint $i$:
+$$\mathbf{J}_i = \begin{bmatrix} \mathbf{0} \\ \mathbf{z}_{i-1} \end{bmatrix}$$
 
 **Analytical Jacobian** relates to Euler angle rates:
-```
-[ω] = [E(φ)  0 ] [φ̇]
-[v]   [0    I ] [ṗ]
-```
+$$\begin{bmatrix} \boldsymbol{\omega} \\ \mathbf{v} \end{bmatrix} = \begin{bmatrix} \mathbf{E}(\boldsymbol{\phi}) & \mathbf{0} \\ \mathbf{0} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \dot{\boldsymbol{\phi}} \\ \dot{\mathbf{p}} \end{bmatrix}$$
 
 ### Inverse Kinematics
 
@@ -208,47 +169,37 @@ q_{k+1} = q_k + (JᵀJ + λI)⁻¹Jᵀ Δx
 
 For a single rigid body:
 
-```
-F = ma_c     (linear motion)
-τ = I_c α + ω × (I_c ω)  (angular motion)
-```
+$$\mathbf{F} = m\mathbf{a}_c \quad \text{(linear motion)}$$
+$$\boldsymbol{\tau} = \mathbf{I}_c \boldsymbol{\alpha} + \boldsymbol{\omega} \times (\mathbf{I}_c \boldsymbol{\omega}) \quad \text{(angular motion)}$$
 
 Where:
-- `F` is resultant force
-- `τ` is resultant torque about center of mass
-- `a_c` is linear acceleration of center of mass
-- `α` is angular acceleration
-- `I_c` is inertia tensor about center of mass
+- $\mathbf{F}$ is resultant force
+- $\boldsymbol{\tau}$ is resultant torque about center of mass
+- $\mathbf{a}_c$ is linear acceleration of center of mass
+- $\boldsymbol{\alpha}$ is angular acceleration
+- $\mathbf{I}_c$ is inertia tensor about center of mass
 
 ### Spatial Form
 
 In spatial notation:
-```
-f = I a + v ×* (I v)
-```
+$$\mathbf{f} = \mathbf{I} \mathbf{a} + \mathbf{v} \times^* (\mathbf{I} \mathbf{v})$$
 
 Where:
-- `f` is spatial force
-- `I` is spatial inertia
-- `a` is spatial acceleration
-- `v` is spatial velocity
+- $\mathbf{f}$ is spatial force
+- $\mathbf{I}$ is spatial inertia
+- $\mathbf{a}$ is spatial acceleration
+- $\mathbf{v}$ is spatial velocity
 
 ### Energy and Momentum
 
 **Kinetic energy**:
-```
-T = ½ vᵀ I v
-```
+$$T = \frac{1}{2} \mathbf{v}^T \mathbf{I} \mathbf{v}$$
 
 **Linear momentum**:
-```
-p = m v_c
-```
+$$\mathbf{p} = m \mathbf{v}_c$$
 
 **Angular momentum**:
-```
-L = I_c ω + m r_c × v_c
-```
+$$\mathbf{L} = \mathbf{I}_c \boldsymbol{\omega} + m \mathbf{r}_c \times \mathbf{v}_c$$
 
 ## Robot Dynamics
 
@@ -256,33 +207,29 @@ L = I_c ω + m r_c × v_c
 
 The robot equations of motion in joint space:
 
-```
-M(q) q̈ + C(q,q̇) q̇ + g(q) = τ
-```
+$$\mathbf{M}(\mathbf{q}) \ddot{\mathbf{q}} + \mathbf{C}(\mathbf{q},\dot{\mathbf{q}}) \dot{\mathbf{q}} + \mathbf{g}(\mathbf{q}) = \boldsymbol{\tau}$$
 
 Where:
-- `M(q)` is the mass matrix
-- `C(q,q̇)` is the Coriolis/centrifugal matrix
-- `g(q)` is the gravity vector
-- `τ` is the joint torque vector
+- $\mathbf{M}(\mathbf{q})$ is the mass matrix
+- $\mathbf{C}(\mathbf{q},\dot{\mathbf{q}})$ is the Coriolis/centrifugal matrix
+- $\mathbf{g}(\mathbf{q})$ is the gravity vector
+- $\boldsymbol{\tau}$ is the joint torque vector
 
 ### Mass Matrix
 
 The joint-space mass matrix:
 
-```
-M(q) = Σᵢ JᵢᵀMᵢJᵢ
-```
+$$\mathbf{M}(\mathbf{q}) = \sum_{i=1}^n \mathbf{J}_i^T \mathbf{M}_i \mathbf{J}_i$$
 
 Where:
-- `Jᵢ` is the Jacobian for link i
-- `Mᵢ` is the spatial inertia of link i
+- $\mathbf{J}_i$ is the Jacobian for link $i$
+- $\mathbf{M}_i$ is the spatial inertia of link $i$
 
 **Properties**:
-- Symmetric: `M = Mᵀ`
+- Symmetric: $\mathbf{M} = \mathbf{M}^T$
 - Positive definite
 - Configuration dependent
-- Size: n×n where n = number of DOF
+- Size: $n \times n$ where $n$ = number of DOF
 
 ### Coriolis and Centrifugal Forces
 

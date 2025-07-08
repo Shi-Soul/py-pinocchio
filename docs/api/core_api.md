@@ -137,7 +137,7 @@ class Link:
 - **`name`** (`str`): Link name (must be unique)
 - **`mass`** (`float`): Link mass in kg
 - **`center_of_mass`** (`Vector3`): Center of mass position in link frame (m)
-- **`inertia_tensor`** (`Matrix3x3`): 3×3 inertia tensor in link frame (kg⋅m²)
+- **`inertia_tensor`** (`Matrix3x3`): $3 \times 3$ inertia tensor in link frame (kg⋅m²)
 - **`has_inertia`** (`bool`): True if link has non-zero mass
 
 **Example:**
@@ -275,10 +275,8 @@ Compute inverse of transformation.
 - Inverse transformation
 
 **Mathematical Operation:**
-```
-For transform T = (R, t):
-T^(-1) = (R^T, -R^T * t)
-```
+For transform $\mathbf{T} = (\mathbf{R}, \mathbf{t})$:
+$$\mathbf{T}^{-1} = (\mathbf{R}^T, -\mathbf{R}^T \mathbf{t})$$
 
 #### `transform_point(transform: Transform, point: np.ndarray) -> np.ndarray`
 
@@ -292,9 +290,7 @@ Apply transformation to a 3D point.
 - Transformed point
 
 **Mathematical Operation:**
-```
-p' = R * p + t
-```
+$$\mathbf{p}' = \mathbf{R} \mathbf{p} + \mathbf{t}$$
 
 #### `transform_vector(transform: Transform, vector: np.ndarray) -> np.ndarray`
 
@@ -308,9 +304,7 @@ Apply only rotation part of transformation to a vector.
 - Transformed vector
 
 **Mathematical Operation:**
-```
-v' = R * v
-```
+$$\mathbf{v}' = \mathbf{R} \mathbf{v}$$
 
 ## Kinematics
 
@@ -416,9 +410,7 @@ Compute joint-space mass matrix.
 - Configuration dependent
 
 **Mathematical Relation:**
-```
-τ = M(q)q̈ + C(q,q̇)q̇ + g(q)
-```
+$$\boldsymbol{\tau} = \mathbf{M}(\mathbf{q})\ddot{\mathbf{q}} + \mathbf{C}(\mathbf{q},\dot{\mathbf{q}})\dot{\mathbf{q}} + \mathbf{g}(\mathbf{q})$$
 
 ### Gravity Forces
 
@@ -465,9 +457,7 @@ Compute joint accelerations from applied torques.
 - n×1 joint acceleration vector where n = num_dof
 
 **Mathematical Operation:**
-```
-q̈ = M(q)^(-1) * [τ - C(q,q̇)q̇ - g(q)]
-```
+$$\ddot{\mathbf{q}} = \mathbf{M}(\mathbf{q})^{-1} \left[\boldsymbol{\tau} - \mathbf{C}(\mathbf{q},\dot{\mathbf{q}})\dot{\mathbf{q}} - \mathbf{g}(\mathbf{q})\right]$$
 
 ### Inverse Dynamics
 
@@ -485,9 +475,7 @@ Compute required torques for desired motion.
 - n×1 required torque vector where n = num_dof
 
 **Mathematical Operation:**
-```
-τ = M(q)q̈ + C(q,q̇)q̇ + g(q)
-```
+$$\boldsymbol{\tau} = \mathbf{M}(\mathbf{q})\ddot{\mathbf{q}} + \mathbf{C}(\mathbf{q},\dot{\mathbf{q}})\dot{\mathbf{q}} + \mathbf{g}(\mathbf{q})$$
 
 ## Jacobians
 
@@ -510,10 +498,8 @@ J = [J_angular]  (3×n)
 ```
 
 **Mathematical Relation:**
-```
-v = J * q̇
-where v = [ω; v] is 6D spatial velocity
-```
+$$\mathbf{v} = \mathbf{J} \dot{\mathbf{q}}$$
+where $\mathbf{v} = \begin{bmatrix} \boldsymbol{\omega} \\ \mathbf{v} \end{bmatrix}$ is 6D spatial velocity
 
 ### `compute_analytical_jacobian(robot: RobotModel, joint_positions: np.ndarray, link_name: str) -> np.ndarray`
 

@@ -59,26 +59,46 @@ complex_com = np.array([0.123, -0.045, 0.067])
 
 ### Inertia Tensors
 
-Inertia tensors describe how mass is distributed:
+Inertia tensors describe how mass is distributed. For a rigid body, the inertia tensor is:
+
+$$\mathbf{I} = \begin{bmatrix}
+I_{xx} & I_{xy} & I_{xz} \\
+I_{xy} & I_{yy} & I_{yz} \\
+I_{xz} & I_{yz} & I_{zz}
+\end{bmatrix}$$
+
+Where the diagonal elements are moments of inertia and off-diagonal elements are products of inertia. For common geometric shapes:
 
 ```python
-# Solid cylinder (radius r, height h, mass m)
+**Solid Cylinder** (radius $r$, height $h$, mass $m$):
+$$I_{xx} = I_{yy} = \frac{m(3r^2 + h^2)}{12}, \quad I_{zz} = \frac{mr^2}{2}$$
+
+```python
 def cylinder_inertia(mass, radius, height):
     Ixx = Iyy = mass * (3*radius**2 + height**2) / 12
     Izz = mass * radius**2 / 2
     return np.diag([Ixx, Iyy, Izz])
+```
 
-# Solid box (width w, depth d, height h, mass m)
+**Solid Box** (width $w$, depth $d$, height $h$, mass $m$):
+$$I_{xx} = \frac{m(d^2 + h^2)}{12}, \quad I_{yy} = \frac{m(w^2 + h^2)}{12}, \quad I_{zz} = \frac{m(w^2 + d^2)}{12}$$
+
+```python
 def box_inertia(mass, width, depth, height):
     Ixx = mass * (depth**2 + height**2) / 12
     Iyy = mass * (width**2 + height**2) / 12
     Izz = mass * (width**2 + depth**2) / 12
     return np.diag([Ixx, Iyy, Izz])
+```
 
-# Solid sphere (radius r, mass m)
+**Solid Sphere** (radius $r$, mass $m$):
+$$I_{xx} = I_{yy} = I_{zz} = \frac{2mr^2}{5}$$
+
+```python
 def sphere_inertia(mass, radius):
     I = 2 * mass * radius**2 / 5
     return np.diag([I, I, I])
+```
 
 # Example usage
 link_mass = 3.0
@@ -393,8 +413,13 @@ For complex shapes, combine simple geometries:
 ```python
 def composite_inertia(components):
     """
-    Combine inertia tensors of multiple components.
-    
+    Combine inertia tensors of multiple components using the parallel axis theorem.
+
+    The parallel axis theorem states that for a rigid body with inertia tensor I_cm
+    about its center of mass, the inertia tensor about a point displaced by vector d is:
+
+    I_new = I_cm + m(||d||²I - d⊗d)
+
     Args:
         components: List of (mass, com, inertia, position) tuples
     """
@@ -416,6 +441,7 @@ def composite_inertia(components):
         d = component_com - combined_com
         
         # Parallel axis theorem: I = I_cm + m * (d²I - d⊗d)
+        # Mathematical form: I_new = I_cm + m(||d||²I - d⊗d)
         d_squared = np.dot(d, d)
         d_outer = np.outer(d, d)
         parallel_axis = mass * (d_squared * np.eye(3) - d_outer)

@@ -158,6 +158,16 @@ print(f"Jacobian:\n{jacobian}")
 
 ## Robot Dynamics
 
+Robot dynamics describes the relationship between forces/torques and motion. The fundamental equation of motion for a robot is:
+
+$$\mathbf{M}(\mathbf{q}) \ddot{\mathbf{q}} + \mathbf{C}(\mathbf{q},\dot{\mathbf{q}}) \dot{\mathbf{q}} + \mathbf{g}(\mathbf{q}) = \boldsymbol{\tau}$$
+
+Where:
+- $\mathbf{M}(\mathbf{q})$ is the mass matrix
+- $\mathbf{C}(\mathbf{q},\dot{\mathbf{q}})$ represents Coriolis and centrifugal forces
+- $\mathbf{g}(\mathbf{q})$ is the gravity vector
+- $\boldsymbol{\tau}$ is the vector of applied joint torques
+
 ### Mass Matrix
 
 The mass matrix relates joint accelerations to joint torques:
@@ -171,6 +181,9 @@ print(f"Mass matrix:\n{M}")
 # - Symmetric: M = M^T
 # - Positive definite: all eigenvalues > 0
 # - Configuration dependent
+#
+# The mass matrix appears in the equation of motion:
+# M(q)q̈ + C(q,q̇)q̇ + g(q) = τ
 ```
 
 ### Gravity Forces
