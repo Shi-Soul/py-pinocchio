@@ -231,15 +231,11 @@ Where:
 
 ### Coriolis and Centrifugal Forces
 
-**Coriolis matrix** `C(q,q̇)`:
-```
-Cᵢⱼ = Σₖ Γᵢⱼₖ q̇ₖ
-```
+**Coriolis matrix** $\mathbf{C}(\mathbf{q},\dot{\mathbf{q}})$:
+$$C_{ij} = \sum_{k=1}^n \Gamma_{ijk} \dot{q}_k$$
 
-Where Christoffel symbols:
-```
-Γᵢⱼₖ = ½ (∂Mᵢⱼ/∂qₖ + ∂Mᵢₖ/∂qⱼ - ∂Mⱼₖ/∂qᵢ)
-```
+Where the Christoffel symbols are:
+$$\Gamma_{ijk} = \frac{1}{2}\left(\frac{\partial M_{ij}}{\partial q_k} + \frac{\partial M_{ik}}{\partial q_j} - \frac{\partial M_{jk}}{\partial q_i}\right)$$
 
 **Properties**:
 - $\dot{\mathbf{M}} - 2\mathbf{C}$ is skew-symmetric
@@ -249,11 +245,9 @@ Where Christoffel symbols:
 ### Gravity Forces
 
 Gravity vector in joint space:
-```
-g(q) = -Σᵢ JᵢᵀMᵢ g₀
-```
+$$\mathbf{g}(\mathbf{q}) = -\sum_{i=1}^n \mathbf{J}_i^T \mathbf{M}_i \mathbf{g}_0$$
 
-Where $\mathbf{g}_0 = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ -9.81 \end{bmatrix}$ is spatial gravity vector.
+Where $\mathbf{g}_0 = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ -9.81 \end{bmatrix}$ is the spatial gravity vector in m/s².
 
 **Properties**:
 - Independent of joint velocities
@@ -267,18 +261,18 @@ Where $\mathbf{g}_0 = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ -9.81 \end{bmatri
 Efficient $O(n)$ algorithm for inverse dynamics:
 
 **Forward pass** (kinematics):
-```
-For i = 1 to n:
-    vᵢ = Xᵢ vᵢ₋₁ + Sᵢ q̇ᵢ
-    aᵢ = Xᵢ aᵢ₋₁ + Sᵢ q̈ᵢ + vᵢ ×* Sᵢ q̇ᵢ
-```
+$$\begin{align}
+\text{For } i &= 1 \text{ to } n: \\
+\mathbf{v}_i &= \mathbf{X}_i \mathbf{v}_{i-1} + \mathbf{S}_i \dot{q}_i \\
+\mathbf{a}_i &= \mathbf{X}_i \mathbf{a}_{i-1} + \mathbf{S}_i \ddot{q}_i + \mathbf{v}_i \times^* \mathbf{S}_i \dot{q}_i
+\end{align}$$
 
 **Backward pass** (dynamics):
-```
-For i = n to 1:
-    fᵢ = Iᵢ aᵢ + vᵢ ×* (Iᵢ vᵢ) + Xᵢ₊₁ᵀ fᵢ₊₁
-    τᵢ = Sᵢᵀ fᵢ
-```
+$$\begin{align}
+\text{For } i &= n \text{ to } 1: \\
+\mathbf{f}_i &= \mathbf{I}_i \mathbf{a}_i + \mathbf{v}_i \times^* (\mathbf{I}_i \mathbf{v}_i) + \mathbf{X}_{i+1}^T \mathbf{f}_{i+1} \\
+\tau_i &= \mathbf{S}_i^T \mathbf{f}_i
+\end{align}$$
 
 Where:
 - $\mathbf{X}_i$ is spatial transformation from link $i-1$ to $i$
@@ -292,69 +286,67 @@ Where:
 Efficient $O(n)$ algorithm for forward dynamics:
 
 **Forward pass**:
-```
-For i = 1 to n:
-    vᵢ = Xᵢ vᵢ₋₁ + Sᵢ q̇ᵢ
-    cᵢ = vᵢ ×* Sᵢ q̇ᵢ
-    Iᵢᴬ = Iᵢ
-```
+$$\begin{align}
+\text{For } i &= 1 \text{ to } n: \\
+\mathbf{v}_i &= \mathbf{X}_i \mathbf{v}_{i-1} + \mathbf{S}_i \dot{q}_i \\
+\mathbf{c}_i &= \mathbf{v}_i \times^* \mathbf{S}_i \dot{q}_i \\
+\mathbf{I}_i^A &= \mathbf{I}_i
+\end{align}$$
 
 **Backward pass**:
-```
-For i = n to 1:
-    Uᵢ = Iᵢᴬ Sᵢ
-    Dᵢ = Sᵢᵀ Uᵢ
-    uᵢ = τᵢ - Sᵢᵀ pᵢᴬ
-    
-    If i > 1:
-        Iᵢ₋₁ᴬ += Xᵢᵀ (Iᵢᴬ - UᵢDᵢ⁻¹Uᵢᵀ) Xᵢ
-        pᵢ₋₁ᴬ += Xᵢᵀ (pᵢᴬ + Iᵢᴬ cᵢ + UᵢDᵢ⁻¹uᵢ)
-```
+$$\begin{align}
+\text{For } i &= n \text{ to } 1: \\
+\mathbf{U}_i &= \mathbf{I}_i^A \mathbf{S}_i \\
+D_i &= \mathbf{S}_i^T \mathbf{U}_i \\
+u_i &= \tau_i - \mathbf{S}_i^T \mathbf{p}_i^A \\
+\\
+\text{If } i &> 1: \\
+\mathbf{I}_{i-1}^A &\mathrel{+}= \mathbf{X}_i^T (\mathbf{I}_i^A - \mathbf{U}_i D_i^{-1} \mathbf{U}_i^T) \mathbf{X}_i \\
+\mathbf{p}_{i-1}^A &\mathrel{+}= \mathbf{X}_i^T (\mathbf{p}_i^A + \mathbf{I}_i^A \mathbf{c}_i + \mathbf{U}_i D_i^{-1} u_i)
+\end{align}$$
 
 **Forward pass** (accelerations):
-```
-For i = 1 to n:
-    q̈ᵢ = (uᵢ - Uᵢᵀ aᵢ₋₁) / Dᵢ
-    aᵢ = Xᵢ aᵢ₋₁ + Sᵢ q̈ᵢ + cᵢ
-```
+$$\begin{align}
+\text{For } i &= 1 \text{ to } n: \\
+\ddot{q}_i &= (u_i - \mathbf{U}_i^T \mathbf{a}_{i-1}) / D_i \\
+\mathbf{a}_i &= \mathbf{X}_i \mathbf{a}_{i-1} + \mathbf{S}_i \ddot{q}_i + \mathbf{c}_i
+\end{align}$$
 
 ### Composite Rigid Body Algorithm (CRBA)
 
 Efficient $O(n^2)$ algorithm for mass matrix:
 
-```
-For i = 1 to n:
-    Iᵢᶜ = Iᵢ
-    
-For i = n to 1:
-    If i > 1:
-        Iᵢ₋₁ᶜ += Xᵢᵀ Iᵢᶜ Xᵢ
-    
-    fᵢ = Iᵢᶜ Sᵢ
-    Mᵢᵢ = Sᵢᵀ fᵢ
-    
-    j = i
-    While j > 1:
-        fⱼ₋₁ = Xⱼᵀ fⱼ
-        Mᵢⱼ₋₁ = Sⱼ₋₁ᵀ fⱼ₋₁
-        j = j - 1
-```
+$$\begin{align}
+\text{For } i &= 1 \text{ to } n: \\
+\mathbf{I}_i^c &= \mathbf{I}_i \\
+\\
+\text{For } i &= n \text{ to } 1: \\
+\text{If } i &> 1: \\
+\mathbf{I}_{i-1}^c &\mathrel{+}= \mathbf{X}_i^T \mathbf{I}_i^c \mathbf{X}_i \\
+\\
+\mathbf{f}_i &= \mathbf{I}_i^c \mathbf{S}_i \\
+M_{ii} &= \mathbf{S}_i^T \mathbf{f}_i \\
+\\
+j &= i \\
+\text{While } j &> 1: \\
+\mathbf{f}_{j-1} &= \mathbf{X}_j^T \mathbf{f}_j \\
+M_{i,j-1} &= \mathbf{S}_{j-1}^T \mathbf{f}_{j-1} \\
+j &= j - 1
+\end{align}$$
 
 ### Jacobian Computation
 
 **Geometric Jacobian**:
-```
-For i = 1 to n:
-    If joint i is revolute:
-        Jᵢ = [zᵢ₋₁; zᵢ₋₁ × (pₙ - pᵢ₋₁)]
-    Else if joint i is prismatic:
-        Jᵢ = [0; zᵢ₋₁]
-```
+$$\begin{align}
+\text{For } i &= 1 \text{ to } n: \\
+\text{If joint } i \text{ is revolute:} \\
+\mathbf{J}_i &= \begin{bmatrix} \mathbf{z}_{i-1} \\ \mathbf{z}_{i-1} \times (\mathbf{p}_n - \mathbf{p}_{i-1}) \end{bmatrix} \\
+\text{Else if joint } i \text{ is prismatic:} \\
+\mathbf{J}_i &= \begin{bmatrix} \mathbf{0} \\ \mathbf{z}_{i-1} \end{bmatrix}
+\end{align}$$
 
 **Time derivative**:
-```
-J̇ = Σᵢ (∂J/∂qᵢ) q̇ᵢ
-```
+$$\dot{\mathbf{J}} = \sum_{i=1}^n \frac{\partial \mathbf{J}}{\partial q_i} \dot{q}_i$$
 
 ## Numerical Considerations
 

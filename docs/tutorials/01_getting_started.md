@@ -21,7 +21,6 @@ py-pinocchio is an educational implementation of rigid body dynamics algorithms 
 
 - Python 3.8 or higher
 - NumPy 1.20.0 or higher
-- SciPy 1.7.0 or higher
 - matplotlib 3.5.0 or higher (for visualization)
 
 ### Install from Source

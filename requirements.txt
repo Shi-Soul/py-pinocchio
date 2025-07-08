@@ -1,6 +1,5 @@
 # Core dependencies
 numpy>=1.20.0
-scipy>=1.7.0
 
 # XML parsing for URDF
 lxml>=4.6.0

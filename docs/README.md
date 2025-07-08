@@ -145,7 +145,6 @@ pip install -e .
 ## Dependencies
 
 - `numpy>=1.20.0` - Numerical computations
-- `scipy>=1.7.0` - Scientific computing utilities
 - `lxml>=4.6.0` - XML parsing for URDF/MJCF
 - `matplotlib>=3.5.0` - Visualization (optional)
 

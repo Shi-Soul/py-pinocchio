@@ -25,12 +25,12 @@ def read_requirements():
 setup(
     name="py-pinocchio",
     version="0.1.0",
-    author="Educational Implementation",
+    author="Shi-Soul, Augment Code",
     author_email="",
     description="A fast and flexible implementation of Rigid Body Dynamics algorithms and their analytical derivatives",
     long_description=read_readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/your-username/py-pinocchio",
+    url="https://github.com/Shi-Soul/py-pinocchio",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
