@@ -316,6 +316,36 @@ Convert X-Y-Z Euler angles to rotation matrix.
 **Returns:**
 - $3 \times 3$ rotation matrix
 
+#### `euler_angles_to_rotation_matrix(roll: float, pitch: float, yaw: float, convention: str = 'xyz') -> Matrix3x3`
+
+Convert individual Euler angles to rotation matrix.
+
+**Parameters:**
+- `roll`: Roll angle $\phi$ (rotation about X-axis)
+- `pitch`: Pitch angle $\theta$ (rotation about Y-axis)
+- `yaw`: Yaw angle $\psi$ (rotation about Z-axis)
+- `convention`: Rotation order ('xyz', 'zyx', etc.). Default: 'xyz'
+
+**Returns:**
+- $3 \times 3$ rotation matrix
+
+**Mathematical Operation:**
+For 'xyz' convention:
+$$\mathbf{R} = \mathbf{R}_z(\psi) \mathbf{R}_y(\theta) \mathbf{R}_x(\phi)$$
+
+**Example:**
+```python
+import numpy as np
+import py_pinocchio as pin
+
+# Convert Euler angles to rotation matrix
+R = pin.euler_angles_to_rotation_matrix(
+    roll=np.pi/6,    # 30 degrees
+    pitch=np.pi/4,   # 45 degrees
+    yaw=np.pi/3      # 60 degrees
+)
+```
+
 ## Numerical Methods
 
 ### Matrix Operations

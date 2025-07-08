@@ -23,7 +23,7 @@ __author__ = "Educational Implementation"
 
 # Import main classes for easy access
 from .model import RobotModel, Joint, Link, JointType, create_robot_model
-from .math.transform import Transform, SE3, create_transform, create_identity_transform
+from .math.transform import Transform, SE3, create_transform, create_identity_transform, compose_transforms, invert_transform
 from .math.spatial import SpatialVector, SpatialMatrix, create_spatial_vector
 from .math.rotation import Quaternion, euler_angles_to_rotation_matrix
 
@@ -33,15 +33,16 @@ from .parsers.mjcf_parser import MJCFParser, parse_mjcf_file, parse_mjcf_string
 
 # Import algorithms
 from .algorithms.kinematics import (
-    ForwardKinematics, compute_forward_kinematics,
+    ForwardKinematics, compute_forward_kinematics, compute_link_transforms,
     get_link_transform, get_link_position, get_link_orientation
 )
 from .algorithms.dynamics import (
     InverseDynamics, ForwardDynamics, compute_inverse_dynamics, compute_forward_dynamics,
-    compute_mass_matrix, compute_coriolis_forces, compute_gravity_vector
+    compute_mass_matrix, compute_coriolis_forces, compute_coriolis_matrix, compute_gravity_vector
 )
 from .algorithms.jacobian import (
-    JacobianComputer, compute_geometric_jacobian, compute_analytical_jacobian
+    JacobianComputer, compute_geometric_jacobian, compute_analytical_jacobian,
+    compute_jacobian_time_derivative
 )
 
 # Import visualization (optional - requires matplotlib)
@@ -65,6 +66,8 @@ __all__ = [
     "SE3",
     "create_transform",
     "create_identity_transform",
+    "compose_transforms",
+    "invert_transform",
     "SpatialVector",
     "SpatialMatrix",
     "create_spatial_vector",
@@ -82,6 +85,7 @@ __all__ = [
     # Algorithms
     "ForwardKinematics",
     "compute_forward_kinematics",
+    "compute_link_transforms",
     "get_link_transform",
     "get_link_position",
     "get_link_orientation",
@@ -95,6 +99,8 @@ __all__ = [
     "JacobianComputer",
     "compute_geometric_jacobian",
     "compute_analytical_jacobian",
+    "compute_jacobian_time_derivative",
+    "compute_coriolis_matrix",
 ]
 
 # Add visualization to __all__ if available

@@ -251,6 +251,7 @@ plt.show()
 For spatial robots and more realistic visualization, 3D rendering provides better understanding of complex geometries.
 
 ```python
+import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 def plot_3d_robot(robot, q, ax=None, **kwargs):

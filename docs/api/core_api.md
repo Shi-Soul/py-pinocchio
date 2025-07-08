@@ -591,4 +591,57 @@ print(f"End-effector position: {ee_pos}")
 print(f"Joint accelerations: {qdd}")
 ```
 
+### `compute_coriolis_matrix(robot: RobotModel, joint_positions: np.ndarray, joint_velocities: np.ndarray) -> np.ndarray`
+
+Compute Coriolis matrix $\mathbf{C}(\mathbf{q},\dot{\mathbf{q}})$ such that $\mathbf{C}(\mathbf{q},\dot{\mathbf{q}})\dot{\mathbf{q}}$ gives Coriolis forces.
+
+**Parameters:**
+- `robot`: Robot model
+- `joint_positions`: Joint positions $\mathbf{q}$
+- `joint_velocities`: Joint velocities $\dot{\mathbf{q}}$
+
+**Returns:**
+- `np.ndarray`: Coriolis matrix (shape: `[num_dof, num_dof]`)
+
+**Mathematical Background:**
+The Coriolis matrix captures velocity-dependent forces in the equation of motion:
+$$\mathbf{M}(\mathbf{q})\ddot{\mathbf{q}} + \mathbf{C}(\mathbf{q},\dot{\mathbf{q}})\dot{\mathbf{q}} + \mathbf{g}(\mathbf{q}) = \boldsymbol{\tau}$$
+
+### `compute_jacobian_time_derivative(robot: RobotModel, joint_positions: np.ndarray, joint_velocities: np.ndarray, end_effector_link: str) -> np.ndarray`
+
+Compute time derivative of Jacobian matrix $\dot{\mathbf{J}}$.
+
+**Parameters:**
+- `robot`: Robot model
+- `joint_positions`: Joint positions $\mathbf{q}$
+- `joint_velocities`: Joint velocities $\dot{\mathbf{q}}$
+- `end_effector_link`: Name of end-effector link
+
+**Returns:**
+- `np.ndarray`: Jacobian time derivative (shape: `[6, num_dof]`)
+
+**Mathematical Background:**
+The Jacobian time derivative is needed for acceleration analysis:
+$$\mathbf{a} = \mathbf{J}\ddot{\mathbf{q}} + \dot{\mathbf{J}}\dot{\mathbf{q}}$$
+
+where $\mathbf{a}$ is the end-effector acceleration.
+
+### `compute_link_transforms(robot: RobotModel, joint_positions: np.ndarray) -> Dict[str, Transform]`
+
+Compute transforms for all links in the robot.
+
+**Parameters:**
+- `robot`: Robot model
+- `joint_positions`: Joint positions $\mathbf{q}$
+
+**Returns:**
+- `Dict[str, Transform]`: Dictionary mapping link names to their world transforms
+
+**Example:**
+```python
+transforms = pin.compute_link_transforms(robot, q)
+for link_name, transform in transforms.items():
+    print(f"{link_name}: {transform.translation}")
+```
+
 This API reference provides the foundation for all robotics computations in py-pinocchio. For more advanced usage, see the tutorials and examples.

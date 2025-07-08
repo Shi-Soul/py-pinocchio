@@ -150,7 +150,7 @@ jacobian = pin.compute_geometric_jacobian(robot, q, "link2")
 print(f"Jacobian shape: {jacobian.shape}")
 print(f"Jacobian:\n{jacobian}")
 
-# The Jacobian is 6×2 (6D spatial velocity, 2 DOF)
+# The Jacobian is $6 \times 2$ (6D spatial velocity, 2 DOF)
 # Top 3 rows: angular velocity components
 # Bottom 3 rows: linear velocity components
 ```
@@ -177,12 +177,12 @@ M = pin.compute_mass_matrix(robot, q)
 print(f"Mass matrix:\n{M}")
 
 # Properties of mass matrix:
-# - Symmetric: M = M^T
+# - Symmetric: $\mathbf{M} = \mathbf{M}^T$
 # - Positive definite: all eigenvalues > 0
 # - Configuration dependent
 #
 # The mass matrix appears in the equation of motion:
-# M(q)q̈ + C(q,q̇)q̇ + g(q) = τ
+# $\mathbf{M}(\mathbf{q})\ddot{\mathbf{q}} + \mathbf{C}(\mathbf{q},\dot{\mathbf{q}})\dot{\mathbf{q}} + \mathbf{g}(\mathbf{q}) = \boldsymbol{\tau}$
 ```
 
 ### Gravity Forces

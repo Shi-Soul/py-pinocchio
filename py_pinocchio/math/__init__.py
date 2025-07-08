@@ -11,18 +11,20 @@ Key components:
 - utils: General mathematical utilities
 """
 
-from .transform import Transform, SE3
+from .transform import Transform, SE3, compose_transforms, invert_transform
 from .rotation import Rotation, SO3
 from .spatial import SpatialVector, SpatialMatrix, SpatialInertia
 from .utils import skew_symmetric, cross_product_matrix
 
 __all__ = [
     "Transform",
-    "SE3", 
+    "SE3",
+    "compose_transforms",
+    "invert_transform",
     "Rotation",
     "SO3",
     "SpatialVector",
-    "SpatialMatrix", 
+    "SpatialMatrix",
     "SpatialInertia",
     "skew_symmetric",
     "cross_product_matrix",

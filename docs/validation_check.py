@@ -90,11 +90,21 @@ def validate_latex_syntax(content: str, filename: str) -> List[Tuple[int, str]]:
     lines = content.split('\n')
     
     for line_num, line in enumerate(lines, 1):
-        # Check for unmatched dollar signs
-        dollar_count = line.count('$')
+        # Skip lines with XACRO variable syntax ${...}
+        if '${' in line and '}' in line:
+            continue
+
+        # Skip lines in code blocks
+        if line.strip().startswith('```') or line.strip().startswith('<'):
+            continue
+
+        # Check for unmatched dollar signs (LaTeX math delimiters)
+        # Remove XACRO variables first
+        clean_line = re.sub(r'\$\{[^}]*\}', '', line)
+        dollar_count = clean_line.count('$')
         if dollar_count % 2 != 0:
             issues.append((line_num, f"Unmatched dollar signs in LaTeX: {line.strip()}"))
-        
+
         # Check for common LaTeX errors
         if '\\mathbf{' in line and '}' not in line:
             issues.append((line_num, f"Unclosed \\mathbf command: {line.strip()}"))

@@ -61,11 +61,11 @@ setup(
             "jupyter>=1.0",
         ],
     },
-    entry_points={
-        "console_scripts": [
-            "py-pinocchio=py_pinocchio.cli:main",
-        ],
-    },
+    # entry_points={
+    #     "console_scripts": [
+    #         "py-pinocchio=py_pinocchio.cli:main",
+    #     ],
+    # },
     include_package_data=True,
     zip_safe=False,
 )

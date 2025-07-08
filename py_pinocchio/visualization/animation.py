@@ -64,7 +64,7 @@ def animate_robot_motion(robot: RobotModel,
         fig, ax = plt.subplots(figsize=vis_config.figure_size)
     
     # Animation function
-    def animate_frame(frame_idx: int):
+    def animate_frame(frame_idx: int) -> None:
         """Update function for animation."""
         ax.clear()
         
@@ -291,7 +291,7 @@ def create_comparison_animation(robots: List[RobotModel],
     # Create visualizers
     visualizers = [RobotVisualizer(robot) for robot in robots]
     
-    def animate_frame(frame_idx: int):
+    def animate_frame(frame_idx: int) -> None:
         """Update function for comparison animation."""
         for i, (visualizer, trajectory, label, ax) in enumerate(zip(visualizers, trajectories, labels, axes)):
             ax.clear()

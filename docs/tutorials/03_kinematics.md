@@ -201,7 +201,7 @@ def inverse_kinematics_newton_raphson(robot, target_position, target_orientation
     Args:
         robot: Robot model
         target_position: Desired end-effector position (3D)
-        target_orientation: Desired orientation (3x3 matrix, optional)
+        target_orientation: Desired orientation ($3 \times 3$ matrix, optional)
         initial_guess: Initial joint configuration
         max_iterations: Maximum number of iterations
         tolerance: Convergence tolerance
@@ -328,16 +328,16 @@ def inverse_kinematics_damped_ls(robot, target_position, damping_factor=0.01,
     
     return q, False, max_iterations
 
-# Compare methods
+# Compare methods (using damped least squares as example)
 target_pos = np.array([0.5, 0.3, 0.1])
 
 print("Comparing IK Methods")
 print("=" * 30)
 
-# Newton-Raphson
-q_nr, conv_nr, iter_nr = inverse_kinematics_newton_raphson(robot, target_pos)
-pos_nr = pin.get_link_position(robot, q_nr, "link3")
-error_nr = np.linalg.norm(pos_nr - target_pos)
+# Damped Least Squares (example method)
+q_dls, conv_dls, iter_dls = inverse_kinematics_damped_ls(robot, target_pos)
+pos_dls = pin.get_link_position(robot, q_dls, "link3")
+error_dls = np.linalg.norm(pos_dls - target_pos)
 
 print(f"Newton-Raphson: converged={conv_nr}, iterations={iter_nr}, error={error_nr:.6f}")
 

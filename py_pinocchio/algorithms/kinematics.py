@@ -116,12 +116,15 @@ def _traverse_kinematic_tree(robot: RobotModel,
         if not joint:
             continue
         
-        # Compute joint transformation
-        joint_transform = _compute_joint_transform(joint, joint_pos_map)
-        joint_transforms[joint.name] = joint_transform
-        
-        # Compute child link transform: T_child = T_parent * T_joint
-        child_transform = compose_transforms(current_transform, joint_transform)
+        # Compute joint transformation in local frame
+        joint_transform_local = _compute_joint_transform(joint, joint_pos_map)
+
+        # Compute joint transform in world frame: T_joint_world = T_parent * T_joint_local
+        joint_transform_world = compose_transforms(current_transform, joint_transform_local)
+        joint_transforms[joint.name] = joint_transform_world
+
+        # Child link transform is the same as joint transform in world frame
+        child_transform = joint_transform_world
         link_transforms[child_link] = child_transform
         
         # Recursively process child's children
@@ -158,14 +161,17 @@ def _compute_joint_transform(joint: Joint, joint_pos_map: Dict[str, float]) -> T
         return base_transform
     
     elif joint.joint_type == JointType.REVOLUTE:
-        # Revolute joint: rotation about axis
+        # Revolute joint: rotation about axis at joint location
         joint_pos = joint_pos_map.get(joint.name, 0.0)
-        
+
         # Create rotation matrix using Rodrigues' formula
         rotation_matrix = rodrigues_formula(joint.axis, joint_pos)
+
+        # For revolute joints, we need to:
+        # 1. Apply origin transform to get to joint location
+        # 2. Apply rotation at that location
+        # This gives us: T_total = T_origin * T_rotation
         motion_transform = create_transform(rotation_matrix, np.zeros(3))
-        
-        # Combine: T_total = T_origin * T_motion
         return compose_transforms(base_transform, motion_transform)
     
     elif joint.joint_type == JointType.PRISMATIC:

@@ -232,12 +232,17 @@ class TestForwardKinematics:
         assert len(link1_pos) == 3
         assert not np.any(np.isnan(link1_pos))
 
-        # Test that position changes from zero configuration
+        # Test that orientation changes from zero configuration
         q_zero = np.array([0.0])
-        link1_pos_zero = pin.get_link_position(robot, q_zero, "link1")
+        link1_rot_zero = pin.get_link_orientation(robot, q_zero, "link1")
+        link1_rot_90 = pin.get_link_orientation(robot, q, "link1")
 
-        # Positions should be different
-        assert not np.allclose(link1_pos, link1_pos_zero)
+        # Orientations should be different (joint rotates the link frame)
+        assert not np.allclose(link1_rot_zero, link1_rot_90)
+
+        # Position should remain the same (link is at joint location)
+        link1_pos_zero = pin.get_link_position(robot, q_zero, "link1")
+        assert np.allclose(link1_pos, link1_pos_zero)
 
 
 class TestJacobian:
@@ -292,11 +297,11 @@ class TestJacobian:
         jacobian = pin.compute_geometric_jacobian(robot, q, "link2")
         
         # At zero config, end-effector is at [2, 0, 0]
-        # First joint contributes: angular [0,0,1], linear [0,2,0]
-        # Second joint contributes: angular [0,0,1], linear [0,1,0]
-        
-        expected_col1 = np.array([0, 0, 1, 0, 2, 0])  # Joint 1 contribution
-        expected_col2 = np.array([0, 0, 1, 0, 1, 0])  # Joint 2 contribution
+        # Joint1 at [1,0,0]: ω×r = [0,0,1] × ([2,0,0]-[1,0,0]) = [0,0,1] × [1,0,0] = [0,1,0]
+        # Joint2 at [2,0,0]: ω×r = [0,0,1] × ([2,0,0]-[2,0,0]) = [0,0,1] × [0,0,0] = [0,0,0]
+
+        expected_col1 = np.array([0, 0, 1, 0, 1, 0])  # Joint 1 contribution
+        expected_col2 = np.array([0, 0, 1, 0, 0, 0])  # Joint 2 contribution
         
         np.testing.assert_array_almost_equal(jacobian[:, 0], expected_col1)
         np.testing.assert_array_almost_equal(jacobian[:, 1], expected_col2)
