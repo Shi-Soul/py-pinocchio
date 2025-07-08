@@ -23,7 +23,7 @@ class Transform(NamedTuple):
 
 #### Properties
 
-- **`rotation`** (`Matrix3x3`): 3×3 rotation matrix $\mathbf{R} \in SO(3)$
+- **`rotation`** (`Matrix3x3`): $3 \times 3$ rotation matrix $\mathbf{R} \in SO(3)$
 - **`translation`** (`Vector3`): 3D translation vector $\mathbf{t} \in \mathbb{R}^3$
 
 #### Mathematical Representation
@@ -53,7 +53,7 @@ assert np.allclose(T_identity.translation, np.zeros(3))
 Create transformation from rotation matrix and translation vector.
 
 **Parameters:**
-- `rotation`: 3×3 rotation matrix (must be orthogonal)
+- `rotation`: $3 \times 3$ rotation matrix (must be orthogonal)
 - `translation`: 3D translation vector
 
 **Returns:**
@@ -184,13 +184,13 @@ $$\mathbf{v}_1 \times^* \mathbf{v}_2 = \begin{bmatrix} \boldsymbol{\omega}_1 \ti
 
 #### `create_spatial_transform(transform: Transform) -> Matrix6x6`
 
-Create 6×6 spatial transformation matrix.
+Create $6 \times 6$ spatial transformation matrix.
 
 **Parameters:**
 - `transform`: 3D transformation
 
 **Returns:**
-- 6×6 spatial transformation matrix
+- $6 \times 6$ spatial transformation matrix
 
 **Mathematical Operation:**
 $$\mathbf{X} = \begin{bmatrix} \mathbf{R} & \mathbf{0} \\ \mathbf{r}^\times \mathbf{R} & \mathbf{R} \end{bmatrix} \in \mathbb{R}^{6 \times 6}$$
@@ -202,7 +202,7 @@ Where $\mathbf{r}^\times$ is the skew-symmetric matrix of translation vector.
 Transform spatial motion vector.
 
 **Parameters:**
-- `X`: 6×6 spatial transformation matrix
+- `X`: $6 \times 6$ spatial transformation matrix
 - `v`: 6D spatial motion vector
 
 **Returns:**
@@ -216,7 +216,7 @@ $$\mathbf{v}' = \mathbf{X} \mathbf{v}$$
 Transform spatial force vector.
 
 **Parameters:**
-- `X`: 6×6 spatial transformation matrix
+- `X`: $6 \times 6$ spatial transformation matrix
 - `f`: 6D spatial force vector
 
 **Returns:**
@@ -240,7 +240,7 @@ Compute rotation matrix using Rodrigues' formula.
 - `angle`: Rotation angle in radians
 
 **Returns:**
-- 3×3 rotation matrix
+- $3 \times 3$ rotation matrix
 
 **Mathematical Operation:**
 $$\mathbf{R} = \mathbf{I} + \sin(\theta)[\mathbf{k}]_\times + (1-\cos(\theta))[\mathbf{k}]_\times^2$$
@@ -252,7 +252,7 @@ Where $[\mathbf{k}]_\times$ is the skew-symmetric matrix of $\mathbf{k}$.
 Extract axis-angle representation from rotation matrix.
 
 **Parameters:**
-- `R`: 3×3 rotation matrix
+- `R`: $3 \times 3$ rotation matrix
 
 **Returns:**
 - Tuple of (axis, angle)
@@ -269,7 +269,7 @@ Create skew-symmetric matrix from 3D vector.
 - `v`: 3D vector $\mathbf{v} = [v_x, v_y, v_z]^T$
 
 **Returns:**
-- 3×3 skew-symmetric matrix
+- $3 \times 3$ skew-symmetric matrix
 
 **Mathematical Operation:**
 $$[\mathbf{v}]_\times = \begin{bmatrix} 0 & -v_z & v_y \\ v_z & 0 & -v_x \\ -v_y & v_x & 0 \end{bmatrix}$$
@@ -283,7 +283,7 @@ $$[\mathbf{v}]_\times = \begin{bmatrix} 0 & -v_z & v_y \\ v_z & 0 & -v_x \\ -v_y
 Extract vector from skew-symmetric matrix.
 
 **Parameters:**
-- `S`: 3×3 skew-symmetric matrix
+- `S`: $3 \times 3$ skew-symmetric matrix
 
 **Returns:**
 - 3D vector
@@ -298,7 +298,7 @@ Inverse of `skew_symmetric`: extracts $\mathbf{v}$ from $[\mathbf{v}]_\times$.
 Convert rotation matrix to X-Y-Z Euler angles.
 
 **Parameters:**
-- `R`: 3×3 rotation matrix
+- `R`: $3 \times 3$ rotation matrix
 
 **Returns:**
 - Euler angles $[\phi, \theta, \psi]^T$ (roll, pitch, yaw)
@@ -314,7 +314,7 @@ Convert X-Y-Z Euler angles to rotation matrix.
 - `euler`: Euler angles $[\phi, \theta, \psi]^T$
 
 **Returns:**
-- 3×3 rotation matrix
+- $3 \times 3$ rotation matrix
 
 ## Numerical Methods
 

@@ -69,7 +69,6 @@ I_{xz} & I_{yz} & I_{zz}
 
 Where the diagonal elements are moments of inertia and off-diagonal elements are products of inertia. For common geometric shapes:
 
-```python
 **Solid Cylinder** (radius $r$, height $h$, mass $m$):
 $$I_{xx} = I_{yy} = \frac{m(3r^2 + h^2)}{12}, \quad I_{zz} = \frac{mr^2}{2}$$
 
@@ -418,7 +417,14 @@ def composite_inertia(components):
     The parallel axis theorem states that for a rigid body with inertia tensor I_cm
     about its center of mass, the inertia tensor about a point displaced by vector d is:
 
-    I_new = I_cm + m(||d||²I - d⊗d)
+    I_new = I_cm + m(‖d‖²I - d⊗d)
+
+    Where:
+    - I_cm is the inertia tensor about the center of mass
+    - m is the mass of the body
+    - d is the displacement vector
+    - ‖d‖² is the squared magnitude of d
+    - d⊗d is the outer product of d with itself
 
     Args:
         components: List of (mass, com, inertia, position) tuples
@@ -441,7 +447,7 @@ def composite_inertia(components):
         d = component_com - combined_com
         
         # Parallel axis theorem: I = I_cm + m * (d²I - d⊗d)
-        # Mathematical form: I_new = I_cm + m(||d||²I - d⊗d)
+        # Mathematical form: I_new = I_cm + m(‖d‖²I - d⊗d)
         d_squared = np.dot(d, d)
         d_outer = np.outer(d, d)
         parallel_axis = mass * (d_squared * np.eye(3) - d_outer)

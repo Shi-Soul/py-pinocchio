@@ -259,10 +259,9 @@ Compose two transformations.
 - Composed transformation
 
 **Mathematical Operation:**
-```
-T_result = T1 * T2
-Point transformation: p' = T1(T2(p))
-```
+$$\mathbf{T}_{\text{result}} = \mathbf{T}_1 \mathbf{T}_2$$
+
+Point transformation: $\mathbf{p}' = \mathbf{T}_1(\mathbf{T}_2(\mathbf{p}))$
 
 #### `invert_transform(transform: Transform) -> Transform`
 
@@ -405,8 +404,8 @@ Compute joint-space mass matrix.
 - $n \times n$ mass matrix where $n$ = num_dof
 
 **Properties:**
-- Symmetric: M = M^T
-- Positive definite: all eigenvalues > 0
+- Symmetric: $\mathbf{M} = \mathbf{M}^T$
+- Positive definite: all eigenvalues $\lambda_i > 0$
 - Configuration dependent
 
 **Mathematical Relation:**
@@ -425,7 +424,7 @@ Compute gravity compensation torques.
 **Returns:**
 - $n \times 1$ gravity vector where $n$ = num_dof
 
-**Note:** Assumes gravity vector [0, 0, -9.81] m/s²
+**Note:** Assumes gravity vector $\mathbf{g}_0 = \begin{bmatrix} 0 \\ 0 \\ -9.81 \end{bmatrix}$ m/s²
 
 ### Coriolis Forces
 
@@ -492,10 +491,11 @@ Compute geometric Jacobian for a link.
 - $6 \times n$ Jacobian matrix where $n$ = num_dof
 
 **Structure:**
-```
-J = [J_angular]  (3×n)
-    [J_linear ]  (3×n)
-```
+$$\mathbf{J} = \begin{bmatrix} \mathbf{J}_{\text{angular}} \\ \mathbf{J}_{\text{linear}} \end{bmatrix} \in \mathbb{R}^{6 \times n}$$
+
+Where:
+- $\mathbf{J}_{\text{angular}} \in \mathbb{R}^{3 \times n}$ relates joint velocities to angular velocity
+- $\mathbf{J}_{\text{linear}} \in \mathbb{R}^{3 \times n}$ relates joint velocities to linear velocity
 
 **Mathematical Relation:**
 $$\mathbf{v} = \mathbf{J} \dot{\mathbf{q}}$$
@@ -545,7 +545,7 @@ Validate and convert to 3D vector.
 
 #### `validate_matrix3x3(m: Any) -> Matrix3x3`
 
-Validate and convert to 3×3 matrix.
+Validate and convert to $3 \times 3$ matrix.
 
 #### `validate_joint_positions(q: Any, expected_dof: int) -> JointPositions`
 

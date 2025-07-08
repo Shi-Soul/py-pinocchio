@@ -151,8 +151,8 @@ print(f"Jacobian shape: {jacobian.shape}")
 print(f"Jacobian:\n{jacobian}")
 
 # The Jacobian is 6×2 (6D spatial velocity, 2 DOF)
-# Top 3 rows: angular velocity
-# Bottom 3 rows: linear velocity
+# Top 3 rows: angular velocity components
+# Bottom 3 rows: linear velocity components
 ```
 
 ## Robot Dynamics

@@ -71,43 +71,13 @@ Mathematical foundations and algorithms:
 - **[Kinematic Algorithms](theory/kinematic_algorithms.md)** - Forward and inverse kinematics theory
 - **[Dynamic Algorithms](theory/dynamic_algorithms.md)** - Efficient dynamics computation
 - **[Numerical Methods](theory/numerical_methods.md)** - Stability and accuracy considerations
-   - [Parsers](api/parsers.md)
-   - [Visualization](api/visualization.md)
-5. [Theory Background](theory/)
-   - [Rigid Body Dynamics](theory/rigid_body_dynamics.md)
-   - [Spatial Algebra](theory/spatial_algebra.md)
-   - [Kinematic Chains](theory/kinematic_chains.md)
-6. [Contributing](contributing.md)
 
-## Quick Start
+### 📋 Guides (Best Practices!)
+Practical guides for effective usage:
 
-```python
-import py_pinocchio as pin
-import numpy as np
-
-# Create a simple robot
-base = pin.Link("base", mass=1.0)
-link1 = pin.Link("link1", mass=0.5, center_of_mass=[0.25, 0, 0])
-joint1 = pin.Joint("joint1", pin.JointType.REVOLUTE, 
-                   axis=[0, 0, 1], parent_link="base", child_link="link1")
-
-robot = pin.create_robot_model("simple_robot", [base, link1], [joint1], "base")
-
-# Compute forward kinematics
-q = np.array([np.pi/4])  # 45 degrees
-ee_pos = pin.get_link_position(robot, q, "link1")
-print(f"End-effector position: {ee_pos}")
-
-# Compute Jacobian
-jacobian = pin.compute_geometric_jacobian(robot, q, "link1")
-print(f"Jacobian shape: {jacobian.shape}")
-
-# Compute dynamics
-qd = np.array([0.1])  # Joint velocity
-tau = np.array([1.0])  # Applied torque
-qdd = pin.compute_forward_dynamics(robot, q, qd, tau)
-print(f"Joint acceleration: {qdd}")
-```
+- **[Performance Guide](guides/performance_guide.md)** - Optimization and benchmarking
+- **[Testing Guide](guides/testing_guide.md)** - Writing and running tests
+- **[Contributing Guide](../CONTRIBUTING.md)** - How to contribute to the project
 
 ## Key Features
 
