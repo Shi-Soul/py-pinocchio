@@ -91,7 +91,7 @@ Where:
 
 ### Homogeneous Transformations
 
-4×4 matrices representing rigid body transformations:
+$4 \times 4$ matrices representing rigid body transformations:
 
 $$\mathbf{T} = \begin{bmatrix} \mathbf{R} & \mathbf{t} \\ \mathbf{0}^T & 1 \end{bmatrix} \in SE(3)$$
 
@@ -150,18 +150,16 @@ $$\begin{bmatrix} \boldsymbol{\omega} \\ \mathbf{v} \end{bmatrix} = \begin{bmatr
 Find joint angles for desired end-effector pose:
 
 **Newton-Raphson method**:
-```
-q_{k+1} = q_k + J†(q_k) Δx
-```
+$$\mathbf{q}_{k+1} = \mathbf{q}_k + \mathbf{J}^{\dagger}(\mathbf{q}_k) \Delta \mathbf{x}$$
 
 Where:
-- `J†` is pseudoinverse of Jacobian
-- `Δx = x_desired - x_current`
+- $\mathbf{J}^{\dagger}$ is the Moore-Penrose pseudoinverse of the Jacobian
+- $\Delta \mathbf{x} = \mathbf{x}_{\text{desired}} - \mathbf{x}_{\text{current}}$ is the pose error
 
 **Damped least squares**:
-```
-q_{k+1} = q_k + (JᵀJ + λI)⁻¹Jᵀ Δx
-```
+$$\mathbf{q}_{k+1} = \mathbf{q}_k + (\mathbf{J}^T\mathbf{J} + \lambda \mathbf{I})^{-1}\mathbf{J}^T \Delta \mathbf{x}$$
+
+Where $\lambda > 0$ is the damping parameter for numerical stability near singularities.
 
 ## Rigid Body Dynamics
 
@@ -244,9 +242,9 @@ Where Christoffel symbols:
 ```
 
 **Properties**:
-- `Ṁ - 2C` is skew-symmetric
+- $\dot{\mathbf{M}} - 2\mathbf{C}$ is skew-symmetric
 - Quadratic in joint velocities
-- Vanishes when `q̇ = 0`
+- Vanishes when $\dot{\mathbf{q}} = \mathbf{0}$
 
 ### Gravity Forces
 
@@ -255,7 +253,7 @@ Gravity vector in joint space:
 g(q) = -Σᵢ JᵢᵀMᵢ g₀
 ```
 
-Where `g₀ = [0; 0; 0; 0; 0; -9.81]` is spatial gravity vector.
+Where $\mathbf{g}_0 = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ -9.81 \end{bmatrix}$ is spatial gravity vector.
 
 **Properties**:
 - Independent of joint velocities
@@ -266,7 +264,7 @@ Where `g₀ = [0; 0; 0; 0; 0; -9.81]` is spatial gravity vector.
 
 ### Recursive Newton-Euler Algorithm (RNEA)
 
-Efficient O(n) algorithm for inverse dynamics:
+Efficient $O(n)$ algorithm for inverse dynamics:
 
 **Forward pass** (kinematics):
 ```
@@ -283,15 +281,15 @@ For i = n to 1:
 ```
 
 Where:
-- `Xᵢ` is spatial transformation from link i-1 to i
-- `Sᵢ` is motion subspace for joint i
-- `vᵢ, aᵢ` are spatial velocity and acceleration
-- `fᵢ` is spatial force
-- `Iᵢ` is spatial inertia
+- $\mathbf{X}_i$ is spatial transformation from link $i-1$ to $i$
+- $\mathbf{S}_i$ is motion subspace for joint $i$
+- $\mathbf{v}_i, \mathbf{a}_i$ are spatial velocity and acceleration
+- $\mathbf{f}_i$ is spatial force
+- $\mathbf{I}_i$ is spatial inertia
 
 ### Articulated Body Algorithm (ABA)
 
-Efficient O(n) algorithm for forward dynamics:
+Efficient $O(n)$ algorithm for forward dynamics:
 
 **Forward pass**:
 ```
@@ -322,7 +320,7 @@ For i = 1 to n:
 
 ### Composite Rigid Body Algorithm (CRBA)
 
-Efficient O(n²) algorithm for mass matrix:
+Efficient $O(n^2)$ algorithm for mass matrix:
 
 ```
 For i = 1 to n:
@@ -370,7 +368,7 @@ J̇ = Σᵢ (∂J/∂qᵢ) q̇ᵢ
 ### Efficiency
 
 - Exploit sparsity in robot structure
-- Use recursive algorithms (O(n) vs O(n³))
+- Use recursive algorithms ($O(n)$ vs $O(n^3)$)
 - Cache computed quantities when possible
 - Vectorize operations for multiple configurations
 

@@ -221,7 +221,7 @@ class Transform(NamedTuple):
 
 #### Properties
 
-- **`rotation`** (`Matrix3x3`): 3×3 rotation matrix
+- **`rotation`** (`Matrix3x3`): $3 \times 3$ rotation matrix
 - **`translation`** (`Vector3`): 3D translation vector
 
 ### Transformation Functions
@@ -238,7 +238,7 @@ Create identity transformation.
 Create transformation from rotation matrix and translation vector.
 
 **Parameters:**
-- `rotation`: 3×3 rotation matrix
+- `rotation`: $3 \times 3$ rotation matrix
 - `translation`: 3D translation vector
 
 **Returns:**
@@ -387,7 +387,7 @@ Get orientation of a specific link.
 - `link_name`: Name of link
 
 **Returns:**
-- 3×3 rotation matrix representing link orientation in world frame
+- $3 \times 3$ rotation matrix representing link orientation in world frame
 
 ## Dynamics
 
@@ -402,7 +402,7 @@ Compute joint-space mass matrix.
 - `joint_positions`: Current joint positions
 
 **Returns:**
-- n×n mass matrix where n = num_dof
+- $n \times n$ mass matrix where $n$ = num_dof
 
 **Properties:**
 - Symmetric: M = M^T
@@ -423,7 +423,7 @@ Compute gravity compensation torques.
 - `joint_positions`: Current joint positions
 
 **Returns:**
-- n×1 gravity vector where n = num_dof
+- $n \times 1$ gravity vector where $n$ = num_dof
 
 **Note:** Assumes gravity vector [0, 0, -9.81] m/s²
 
@@ -439,7 +439,7 @@ Compute Coriolis and centrifugal forces.
 - `joint_velocities`: Current joint velocities
 
 **Returns:**
-- n×1 Coriolis force vector where n = num_dof
+- $n \times 1$ Coriolis force vector where $n$ = num_dof
 
 ### Forward Dynamics
 
@@ -454,7 +454,7 @@ Compute joint accelerations from applied torques.
 - `joint_torques`: Applied joint torques
 
 **Returns:**
-- n×1 joint acceleration vector where n = num_dof
+- $n \times 1$ joint acceleration vector where $n$ = num_dof
 
 **Mathematical Operation:**
 $$\ddot{\mathbf{q}} = \mathbf{M}(\mathbf{q})^{-1} \left[\boldsymbol{\tau} - \mathbf{C}(\mathbf{q},\dot{\mathbf{q}})\dot{\mathbf{q}} - \mathbf{g}(\mathbf{q})\right]$$
@@ -472,7 +472,7 @@ Compute required torques for desired motion.
 - `joint_accelerations`: Desired joint accelerations
 
 **Returns:**
-- n×1 required torque vector where n = num_dof
+- $n \times 1$ required torque vector where $n$ = num_dof
 
 **Mathematical Operation:**
 $$\boldsymbol{\tau} = \mathbf{M}(\mathbf{q})\ddot{\mathbf{q}} + \mathbf{C}(\mathbf{q},\dot{\mathbf{q}})\dot{\mathbf{q}} + \mathbf{g}(\mathbf{q})$$
@@ -489,7 +489,7 @@ Compute geometric Jacobian for a link.
 - `link_name`: Name of link to compute Jacobian for
 
 **Returns:**
-- 6×n Jacobian matrix where n = num_dof
+- $6 \times n$ Jacobian matrix where $n$ = num_dof
 
 **Structure:**
 ```
@@ -511,7 +511,7 @@ Compute analytical Jacobian for a link.
 - `link_name`: Name of link to compute Jacobian for
 
 **Returns:**
-- 6×n analytical Jacobian matrix where n = num_dof
+- $6 \times n$ analytical Jacobian matrix where $n$ = num_dof
 
 **Note:** Analytical Jacobian relates joint velocities to end-effector linear and angular velocities in a more intuitive coordinate system.
 
@@ -522,9 +522,9 @@ Compute analytical Jacobian for a link.
 ```python
 # Basic numpy array types
 Vector3: TypeAlias = np.ndarray      # 3D vector
-Matrix3x3: TypeAlias = np.ndarray    # 3×3 matrix
-Matrix4x4: TypeAlias = np.ndarray    # 4×4 homogeneous transformation
-Matrix6x6: TypeAlias = np.ndarray    # 6×6 spatial matrix
+Matrix3x3: TypeAlias = np.ndarray    # $3 \times 3$ matrix
+Matrix4x4: TypeAlias = np.ndarray    # $4 \times 4$ homogeneous transformation
+Matrix6x6: TypeAlias = np.ndarray    # $6 \times 6$ spatial matrix
 
 # Joint configuration types
 JointPositions: TypeAlias = np.ndarray    # Array of joint positions

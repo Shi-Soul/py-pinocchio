@@ -58,7 +58,7 @@ In py-pinocchio, a robot is represented as a collection of **links** connected b
 ### Transformations
 
 3D transformations are represented using:
-- **Rotation matrices**: 3×3 orthogonal matrices
+- **Rotation matrices**: $3 \times 3$ orthogonal matrices
 - **Translation vectors**: 3D position vectors
 - **Transform objects**: Combined rotation and translation
 
